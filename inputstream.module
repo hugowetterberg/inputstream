@@ -1,0 +1,7 @@
+<?php
+// $Id$
+
+// This module implementation is short and sweet. Include and register our
+// stream wrapper.
+require_once('DrupalStream.php');
+stream_wrapper_register("drupal", "DrupalStream");

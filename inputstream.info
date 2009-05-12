@@ -1,0 +1,5 @@
+; $Id$
+name = IO Helper
+description = Provides helper function for working with streams.
+core = 6.x
+php = 5.2
