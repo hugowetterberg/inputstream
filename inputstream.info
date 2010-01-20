@@ -1,5 +1,8 @@
 ; $Id$
 name = Input stream helper 
 description = Provides a stream-wrapper for drupal://input that should be used instead of php://input
-core = 6.x
+core = 7.x
 php = 5.2
+
+files[] = inputstream.module
+files[] = DrupalStream.php
