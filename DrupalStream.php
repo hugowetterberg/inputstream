@@ -1,5 +1,5 @@
 <?php
-// $Id$
+// $Id: DrupalStream.php,v 1.1.2.1 2011/01/01 21:43:47 hugowetterberg Exp $
 
 /**
  * @file
