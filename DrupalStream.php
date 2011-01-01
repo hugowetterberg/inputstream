@@ -1,12 +1,32 @@
 <?php
 // $Id$
 
+/**
+ * @file
+ * Stream wrapper for php://input.
+ *
+ * Allow more than one module to access php://input at the same time, via the
+ * drupal://input stream.
+ *
+ * For more information on the implementation refer to
+ * http://php.net/streamwrapper
+ */
+
+/**
+ * drupal://input Stream wrapper class.
+ */
 class DrupalStream {
   private static $tmpStream;
   private static $lastAccess;
   private $position = 0;
+  /**
+   * The current context, or NULL if no context was passed to the caller function.
+   */
   public $context;
 
+  /**
+   * Handle the stream open event.
+   */
   public function stream_open($path, $mode, $options, &$opened_path) {
     $url = parse_url($path);
     if ($url["host"] === 'input' && ($mode==='r' || $mode==='rb')) {
@@ -19,6 +39,13 @@ class DrupalStream {
     return FALSE;
   }
 
+  /**
+   * Read from the stream.
+   *
+   * @param int The number of characters to read from the stream.
+   *
+   * @return String the characters from the stream.
+   */
   public function stream_read($count) {
     $this->consistencyCheck();
     $ret = fread(self::$tmpStream, $count);
@@ -26,15 +53,28 @@ class DrupalStream {
     return $ret;
   }
 
+  /**
+   * Retrieve the current position of a stream.
+   *
+   * @return int The current position of the stream.
+   */
   public function stream_tell() {
     return $this->position;
   }
 
+  /**
+   * Tests for end-of-file on a file pointer
+   *
+   * @return bool Has the end of the stream been reached?
+   */
   public function stream_eof() {
     $this->consistencyCheck();
     return feof(self::$tmpStream);
   }
 
+  /**
+   * Seeks to specific location in a stream
+   */
   public function stream_seek($offset, $whence=SEEK_SET) {
     $this->consistencyCheck();
     if (fseek(self::$tmpStream, $offset, $whence)) {
