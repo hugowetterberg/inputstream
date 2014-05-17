@@ -16,9 +16,9 @@
  * drupal://input Stream wrapper class.
  */
 class DrupalStream {
-  private static $tmpStream;
-  private static $lastAccess;
-  private $position = 0;
+  protected static $tmpStream;
+  protected static $lastAccess;
+  protected $position = 0;
   /**
    * The current context, or NULL if no context was passed to the caller function.
    */
@@ -99,7 +99,7 @@ class DrupalStream {
    *
    * @return void
    */
-  private function consistencyCheck() {
+  protected function consistencyCheck() {
     if (!(self::$lastAccess === $this)) {
       fseek(self::$tmpStream, $this->position, SEEK_SET);
       self::$lastAccess = $this;
@@ -112,7 +112,7 @@ class DrupalStream {
    * @return resource
    *  A stream resource.
    */
-  private function getTempStream() {
+  protected function getTempStream() {
     $handle = fopen("php://temp", "r+");
     $input = fopen("php://input", "r");
     if ($input) {
